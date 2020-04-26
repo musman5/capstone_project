@@ -1,13 +1,16 @@
 This is the project repo for the final project of the Udacity Self-Driving Car Nanodegree: Programming a Real Self-Driving Car. For more information about the project, see the project introduction [here](https://classroom.udacity.com/nanodegrees/nd013/parts/6047fe34-d93c-4f50-8336-b70ef10cb4b2/modules/e1a23b06-329a-4684-a717-ad476f0d8dff/lessons/462c933d-9f24-42d3-8bdc-a08a5fc866e4/concepts/5ab4b122-83e6-436d-850f-9f4d26627fd9).
 
-Please use **one** of the two installation options, either native **or** docker installation.
-
 ### Team Members
-M Usman Afzal	musman9@gmail.com
-Patrick Sai Ho Poon	poon.patrick@gmail.com
-Deepesh Dongre	deepeshdongre@gmail.com
-James Neville	jamesneville5@gmail.com
-Abhinav Eramally	abhinav.eramally@daimler.com
+
+| Name | Email |
+| ------ | ------ |
+| M Usman Afzal | musman9@gmail.com |
+| Patrick Sai Ho Poon | poon.patrick@gmail.com |
+| Deepesh Dongre | deepeshdongre@gmail.com |
+| James Neville | jamesneville5@gmail.com |
+| Abhinav Eramally | abhinav.eramally@daimler.com |
+
+Please use **one** of the two installation options, either native **or** docker installation.
 
 ### Native Installation
 
@@ -81,7 +84,9 @@ roslaunch launch/site.launch
 5. Confirm that traffic light detection works on real life images
 
 ### Architecture
-ROS Architecture is chosen for the project. It consists of nodes that communicate via messaging service. Information about the car's state (vehicle's current position, velocity and camera readings) and control (steering, braking and throttle) are captured and shared among different nodes. The information are used in Perception, Planning and Control planning.
+ROS Architecture is chosen for the project. It consists of nodes that communicate via messaging service. Information about the car's state (vehicle's current position, velocity and camera readings) and control (steering, braking and throttle) are captured and shared among different nodes. The information are used in Perception, Planning and Control.
+
+![ros_arch](./imgs/ros_arch.png)
 
 Camera readings get processed in the traffic light classifier with a neural network in order to detect traffic lights. The result of the classifier, the vehicle's current position and a set of base waypoints are passed to the traffic light detector. The data that is collected will predict the next traffic light and detect whether the car should come to a stop on a red light.
 
@@ -89,11 +94,14 @@ The output of the traffic light detector will trigger the waypoint updater accel
 
 ### Details of each function
 
-Waypoint Updater - the hub of waypoint planning. in the WaypointUpdater class, base waypoints (output of waypoint loader), the vehicle's position and the traffic waypoint from traffic detector are repeatedly used to drive the vehicle forward. Decelerate_waypoints is called when red traffic light is detected and the vehicle needs to come to a stop. 
+**Waypoint Updater** - the hub of waypoint planning. in the WaypointUpdater class, base waypoints (output of waypoint loader), the vehicle's position and the traffic waypoint from traffic detector are repeatedly used to drive the vehicle forward. Decelerate_waypoints is called when red traffic light is detected and the vehicle needs to come to a stop. 
 
-Traffic Light Detection - function picks up the current position base waypoints, the given traffic light array and the traffic light status. The traffic light classifer function returns the current traffic light status (colour) and gets processed in the pipelineand will trigger waypoint updater to prompt the vehicle to stop in the red light. The traffic light classification model is built using Tensorflow. The classification output choices are: Red, Green, Yellow and off. 
+![waypoint_updater](./imgs/ros_waypoint_updater.png)
 
-Drive-By-Wire (DBW) Node - responsible for steering the car with a twist controller which manages throttle, brake and steering actions with a PID-controller and communicate with the simulator
+**Traffic Light Detection** - function picks up the current position base waypoints, the given traffic light array and the traffic light status. The traffic light classifer function returns the current traffic light status (colour) and gets processed in the pipelineand will trigger waypoint updater to prompt the vehicle to stop in the red light. The traffic light classification model is built using Tensorflow. The classification output choices are: Red, Green, Yellow and off.
 
+![tl_detector](./imgs/ros_tl_detector.png)
 
+**Drive-By-Wire(DBW) Node** - responsible for steering the car with a twist controller which manages throttle, brake and steering actions with a PID-controller and communicate with the simulator
 
+![dbw_node](./imgs/ros_dbw_node.png)
